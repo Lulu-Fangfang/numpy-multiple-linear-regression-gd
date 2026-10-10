@@ -72,8 +72,13 @@ def standardize_features(X, mean, std):
 
     return (X - mean) / std
 
-# Step 5 - add_bias_column (not yet solved)
-# TODO: implement
+# Step 5 - add_bias_column
+def add_bias_column(X):
+    # TODO: Prepend a column of ones to feature matrix X
+    X = np.asarray(X)
+
+    ones = np.ones((X.shape[0], 1), dtype = X.dtype)
+    return np.concatenate((ones, X), axis = 1)
 
 # Step 6 - prepare_design_matrix (not yet solved)
 # TODO: implement
