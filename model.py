@@ -33,8 +33,23 @@ def shuffle_xy(X, y, seed=42):
     indices = rng.permutation(X.shape[0])
     return  X[indices] , y[indices]
 
-# Step 2 - split_train_val_test (not yet solved)
-# TODO: implement
+# Step 2 - split_train_val_test
+def split_train_val_test(X, y, train_frac=0.6, val_frac=0.2):
+    # TODO: Slice already-shuffled data into contiguous train/val/test partitions...
+    n, d = np.shape(X)
+    n_train = int(n * train_frac)
+    n_val = int(n * val_frac)
+    n_test = n - n_train - n_val
+
+    X_tr = X[:n_train,:]
+    X_val = X[n_train:(n_train+n_val), :]
+    X_test = X[(n_train + n_val): (n_train+n_val+n_test), :]
+
+    y_tr = y[:n_train]
+    y_val = y[n_train:(n_train+n_val)]
+    y_test = y[(n_train + n_val):(n_train + n_val + n_test)]
+
+    return (X_tr, y_tr,X_val,y_val,X_test,y_test)
 
 # Step 3 - compute_feature_stats (not yet solved)
 # TODO: implement
