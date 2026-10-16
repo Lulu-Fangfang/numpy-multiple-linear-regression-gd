@@ -478,6 +478,12 @@ def score_lr_model(model, X, y):
         "r2": float(r2),
     }
 
-# Step 28 - compare_with_normal_equation (not yet solved)
-# TODO: implement
+# Step 28 - compare_with_normal_equation
+def compare_with_normal_equation(model):
+    # TODO: Return the L2 distance between GD and normal-equation weights.
+    weights = np.asarray(model["weights"], dtype = float)
+    normal_weights = np.asarray(model["normal_weights"],
+    dtype = float)
+
+    return float(np.linalg.norm(weights - normal_weights))
 
