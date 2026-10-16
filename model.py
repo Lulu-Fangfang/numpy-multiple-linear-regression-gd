@@ -356,8 +356,92 @@ def create_lr_model(learning_rate=0.01, epochs=1000, patience=50, seed=0):
         'val_losses': []
     }
 
-# Step 25 - fit_lr_model (not yet solved)
-# TODO: implement
+# Step 25 - fit_lr_model
+def fit_lr_model(model, X_train, y_train, X_val, y_val):
+    # TODO: Fit model with train stats, design matrices, GD, and normal eq
+    X_train = np.asarray(X_train, dtype = float)
+    X_val = np.asarray(X_val, dtype = float)
+    y_train = np.asarray(y_train, dtype = float)
+    y_val = np.asarray(y_val, dtype = float)
+
+    mean = X_train.mean(axis = 0)
+    std = X_train.std(axis = 0)
+
+    std = np.where(std == 0, 1.0, std)
+    X_train_scaled = (X_train - mean) / std
+    X_val_scaled = (X_val - mean) / std
+
+    train_design = np.column_stack([
+        np.ones(X_train.shape[0]),
+        X_train_scaled,
+    ])
+
+    val_design = np.column_stack(
+        [
+            np.ones(X_val.shape[0]),
+            X_val_scaled,
+        ]
+    )
+
+    learning_rate = model["learning_rate"]
+    epochs = model["epochs"]
+    patience = model["patience"]
+
+    rng = np.random.default_rng(model["seed"])
+    weights = rng.normal(
+        loc = 0.0,
+        scale = 0.01,
+        size = train_design.shape[1],
+    )
+
+
+    train_losses = []
+    val_losses = []
+    best_val_loss = float("inf")
+    best_weights = weights.copy()
+    no_improvement = 0
+
+    for _ in range(epochs):
+        error = train_design @ weights - y_train
+        gradient = (
+            2.0 / len(y_train)
+        ) * (train_design.T @ error)
+
+        weights = weights - learning_rate * gradient
+
+        train_loss = float(
+            np.mean((train_design @ weights - y_train) ** 2)
+        )
+        val_loss = float(
+            np.mean((val_design @ weights - y_val) ** 2)
+        )
+
+        train_losses.append(train_loss)
+        val_losses.append(val_loss)
+
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            best_weights = weights.copy()
+            no_improvement = 0
+        else:
+            no_improvement += 1
+
+            if patience is not None and no_improvement >= patience:
+                break
+    normal_weights = (
+        np.linalg.pinv(train_design.T @ train_design)
+        @ train_design.T
+        @ y_train
+    )
+
+    model["mean"] = mean
+    model["std"] = std
+    model["weights"] = best_weights
+    model["normal_weights"] = normal_weights
+    model["train_losses"] = train_losses
+    model["val_losses"] = val_losses
+
+    return model
 
 # Step 26 - predict_lr_model (not yet solved)
 # TODO: implement
