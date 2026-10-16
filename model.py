@@ -458,8 +458,25 @@ def predict_lr_model(model, X):
 
     return design @ model["weights"]
 
-# Step 27 - score_lr_model (not yet solved)
-# TODO: implement
+# Step 27 - score_lr_model
+def score_lr_model(model, X, y):
+    # TODO: Predict on raw features and return MAE, RMSE, and R^2 metrics.
+    y = np.asarray(y, dtype = float).reshape(-1)
+    y_pred = predict_lr_model(model, X)
+
+    # error = y - y_pred
+
+    mae = mean_absolute_error(y, y_pred)
+
+    rmse = root_mean_squared_error(y, y_pred)
+
+    r2 = r_squared(y, y_pred)
+
+    return {
+        "mae": float(mae),
+        "rmse": float(rmse),
+        "r2": float(r2),
+    }
 
 # Step 28 - compare_with_normal_equation (not yet solved)
 # TODO: implement
