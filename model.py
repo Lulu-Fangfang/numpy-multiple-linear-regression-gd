@@ -443,8 +443,20 @@ def fit_lr_model(model, X_train, y_train, X_val, y_val):
 
     return model
 
-# Step 26 - predict_lr_model (not yet solved)
-# TODO: implement
+# Step 26 - predict_lr_model
+def predict_lr_model(model, X):
+    # TODO: Return predicted targets for raw X using the fitted model.
+    X = np.asarray(X, dtype = float)
+    X_scaled = (X - model["mean"]) / model["std"]
+
+    design = np.column_stack(
+        [
+            np.ones(X.shape[0]),
+            X_scaled,
+        ]
+    )
+
+    return design @ model["weights"]
 
 # Step 27 - score_lr_model (not yet solved)
 # TODO: implement
