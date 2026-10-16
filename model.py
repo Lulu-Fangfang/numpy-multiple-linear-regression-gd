@@ -287,8 +287,13 @@ def mean_absolute_error(y_true, y_pred):
 
     return float(np.mean(np.abs(y_true - y_pred)))
 
-# Step 19 - root_mean_squared_error (not yet solved)
-# TODO: implement
+# Step 19 - root_mean_squared_error
+def root_mean_squared_error(y_true, y_pred):
+    # TODO: Return the root mean squared error between y_true and y_pred.
+    y_true = np.asarray(y_true, dtype = float)
+    y_pred = np.asarray(y_pred, dtype = float)
+
+    return float(np.sqrt(np.mean((y_pred-y_true)**2)))
 
 # Step 20 - r_squared (not yet solved)
 # TODO: implement
